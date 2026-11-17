@@ -22,10 +22,10 @@
    ```text
    安装目录/Client/Binaries/Win64/Client-Win64-Shipping.exe
    ```
-2. 在游戏属性的兼容性设置中，选择合适的 Proton 版本。推荐 dwproton；是否适用取决于当前游戏与运行环境。
+2. 在游戏属性的兼容性设置中，选择合适的 Proton 版本。推荐 [dwproton](https://dawn.wine/dawn-winery/dwproton/releases)；是否适用取决于当前游戏与运行环境。
 3. 在启动选项中填写对应档位参数。例如 HD：
    ```text
-   # 曾经 steamdeck=1 参数也有用，仅参考
+   # 曾经 steamdeck=1/SteamOS=1 参数可能有用，仅参考
    -krqlv=hd
    ```
 
@@ -41,8 +41,6 @@ scripts/setup-linux.sh --game-dir ~/Games/WutheringWaves
 ```
 
 脚本依次完成：下载并校验 DWProton、准备 riched20 UTF-8 补丁组件（修复登录协议正文乱码）、建立独立 prefix（DXVK、vkd3d-proton、dxvk-nvapi、NVIDIA 的 NGX 运行时、ICU、字体、DLL 覆盖），初始化后逐项自检并补装缺项，最后把启动器装到 `~/.local/bin/run_ww`，并写入桌面启动器入口 `ww.desktop`（图标从游戏自带启动器里提取）。
-
-DWProton 版本从 dawn.wine 的发布接口实时解析，默认取最新正式发布：已经装过就不再下载，出现新版本时重跑脚本即自动升级。升级后留下的旧版本目录与归档，脚本会在安装结束时列出体积并询问是否删除，默认保留（`-y` 或非交互运行时一律保留）。固定版本用 `--proton 11.0-17` 或环境变量 `WW_DWPROTON_VERSION`；离线时回退到本机已装版本，没装过才用内置兜底版本。校验值默认抓发布里的 `.sha512sum`，也可用 `WW_DWPROTON_SHA512` 指定。
 
 常用开关：
 
@@ -66,7 +64,6 @@ DWProton 版本从 dawn.wine 的发布接口实时解析，默认取最新正式
 
 ### 安装额外的 Proton 版本
 - [dwproton](https://dawn.wine/dawn-winery/dwproton/releases)
-- [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom/releases/)
 将相应发布包解压到 `~/.local/share/Steam/steamapps/common/`，重新启动 Steam 后，在游戏的兼容性设置中选择。具体安装要求以对应项目文档为准。
 
 ## 常见问题
@@ -83,13 +80,11 @@ Fatal error: [File:Unknown] [Line: 54] kuro: Use launcher to start game!
 
 若参数正确但仍然报错，不应直接认定是同一原因。
 
-### ACE 反作弊警告或上线后被踢下线
-
-原社区经验包括更换为 dwproton，或尝试上述 `steamdeck=1` 配置。这些方法不保证解决问题。
-
 ### 上线约十分钟后需要重新登录
 
-引用 bilibili 用户 `@神麤詭末` 提供的官服方案：
+通常由 Kuro 增强 ACE 导致，更新 dwproton 到最新版本通常能解决。如未解决，请向 dwproton 提交 issue,比如 [dwproton issue #92](https://dawn.wine/dawn-winery/dwproton/issues/92)；
+
+或者引用 bilibili 用户 `@神麤詭末` 提供的官服方案：
 
 1. 先备份：
    ```text
@@ -98,7 +93,7 @@ Fatal error: [File:Unknown] [Line: 54] kuro: Use launcher to start game!
 2. 将 `KR_ChannelId` 从 `19` 修改为 `205`。
 3. 若启动时弹出“网络错误”，原方案建议点击“重试”。
 
-该方案已经长时间未验证。
+该方案最后验证有效时间 `2026-11.12`, 游戏版本 `3.8`。
 
 ### 剧情文本错误或素材缺失
 
